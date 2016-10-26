@@ -6,7 +6,7 @@ namespace SoftwareModeling.GameCharacter.AI
     {
         public override bool executeNode(AICharacter self_)
         {
-            AICharacter target = SMCharacterManager.getInstance().getNearestEnemyFrom(self_);
+            ITargetable target = SMCharacterManager.getInstance().getNearestEnemyFrom(self_);
             if( target == null )
             {
                 return false;

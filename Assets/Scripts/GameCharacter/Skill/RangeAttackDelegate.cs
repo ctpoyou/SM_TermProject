@@ -9,7 +9,7 @@ namespace SoftwareModeling.GameCharacter.Skill
         {
         }
 
-        override public bool useSkillTo( AICharacter from_, AICharacter to_ )
+        override public bool useSkillTo(ISkillUsable from_, ITargetable to_)
         {
             double time_ = SMTimeManager.getInstance().currentTime;
             if (isSkillReady(time_, from_, to_))

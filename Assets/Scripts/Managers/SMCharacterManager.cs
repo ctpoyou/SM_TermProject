@@ -68,15 +68,16 @@ namespace SoftwareModeling.Managers
             }
         }
 
-        private void onCharacterDestroy( AICharacter self_ )
+        private void onCharacterDestroy( ITargetable self_ )
         {
-            switch( self_.faction )
+            AICharacter character = self_ as AICharacter;
+            switch( character.faction )
             {
                 case FactionEnum.Ally:
-                    _playerCharacters.Remove(self_);
+                    _playerCharacters.Remove(character);
                     break;
                 case FactionEnum.Enemy:
-                    _enemyCharacters.Remove(self_);
+                    _enemyCharacters.Remove(character);
                     break;
             }
         }

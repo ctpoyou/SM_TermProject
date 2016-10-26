@@ -17,9 +17,9 @@ namespace SoftwareModeling.GameCharacter.Skill
             _range = range_;
         }
 
-        public abstract bool useSkillTo(AICharacter from_, AICharacter to_);
+        public abstract bool useSkillTo(ISkillUsable from_, ITargetable to_);
 
-        protected bool isSkillReady( double time_, AICharacter from_, AICharacter to_ )
+        protected bool isSkillReady( double time_, ISkillUsable from_, ITargetable to_ )
         {
             return _cooldown <= time_ - _lastUsedTime && Vector2.Distance(from_.position, to_.position) <= _range;
         }

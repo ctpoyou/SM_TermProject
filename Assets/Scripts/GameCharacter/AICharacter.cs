@@ -11,25 +11,13 @@ using UnityEngine.AI;
 
 namespace SoftwareModeling.GameCharacter
 {
-    // events
-    public delegate void onHitDelegate( AICharacter from_, AICharacter to_);
-    public delegate void onDestroyDelegate( AICharacter self_);
-    public enum FactionEnum { Ally, Enemy };
-
-    abstract public class AICharacter : AbstractCharacter
+    abstract public class AICharacter : AbstractCharacter, ISkillUsable
     {
-        [Range(1, 10000)]
-        public double _maxHitPoint;
-
-        private double _hitPoint;
         private NavMeshAgent _navAgent;
         private List<SkillDelegate> _skills;
         private AbstractAINode _AIRoot;
-        private FactionEnum _faction;
-        private CharacterHUDRoot _hudRoot;
 
-        private event onDestroyDelegate _onDestroy;
-        private event onHitDelegate _onHit;
+        private CharacterHUDRoot _hudRoot;
 
         #region initialize
         protected override void Awake()
@@ -42,12 +30,15 @@ namespace SoftwareModeling.GameCharacter
             switch( this. tag)
             {
                 case "PlayerParty":
-                    _faction = FactionEnum.Ally;
+                    faction = FactionEnum.Ally;
                     break;
                 case "EnemyParty":
-                    _faction = FactionEnum.Enemy;
+                    faction = FactionEnum.Enemy;
                     break;
             }
+
+            onHit += onAttacked;
+            onDestroy += onDestroyed;
         }
 
         protected override void Start()
@@ -71,21 +62,14 @@ namespace SoftwareModeling.GameCharacter
         }
 
         #region peripherals
-
-        public bool isAlive
+        private void onAttacked( ISkillUsable from_, double dmg_ )
         {
-            get
-            {
-                return hitPoint >= 0;
-            }
+            _hudRoot.showNumber((int)dmg_);
         }
 
-        public FactionEnum faction
+        private void onDestroyed( ITargetable self_ )
         {
-            get
-            {
-                return _faction;
-            }
+            _navAgent.Stop();
         }
 
         protected AbstractAINode AIRoot
@@ -98,74 +82,6 @@ namespace SoftwareModeling.GameCharacter
             set
             {
                 _AIRoot = value;
-            }
-        }
-
-        public double hitPointRatio
-        {
-            get
-            {
-                return _hitPoint / _maxHitPoint;
-            }
-        }
-
-        public double hitPoint
-        {
-            get
-            {
-                return _hitPoint;
-            }
-
-            set
-            {
-                _hitPoint = value;
-            }
-        }
-
-        public void attacked( AICharacter from_, double dmg_ )
-        {
-            if( _onHit != null )
-            {
-                _onHit(from_, this);
-            }
-
-            hitPoint -= dmg_;
-            _hudRoot.showNumber((int)dmg_);
-
-            if( !isAlive )
-            {
-                _navAgent.Stop();
-
-                if (_onDestroy != null)
-                {
-                    _onDestroy(this);
-                }
-            }
-        }
-
-        public event onDestroyDelegate onDestroy
-        {
-            add
-            {
-                _onDestroy += value;
-            }
-
-            remove
-            {
-                _onDestroy -= value;
-            }
-        }
-
-        public event onHitDelegate onHit
-        {
-            add
-            {
-                _onHit += value;
-            }
-
-            remove
-            {
-                _onHit -= value;
             }
         }
 
@@ -182,7 +98,7 @@ namespace SoftwareModeling.GameCharacter
             return false;
         }
 
-        public bool useSkillTo(int sklIdx_, AICharacter target_)
+        public bool useSkillTo(int sklIdx_, ITargetable target_)
         {
             return _skills[sklIdx_].useSkillTo( this, target_ );
         }

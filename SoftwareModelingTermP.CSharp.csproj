@@ -95,10 +95,14 @@
     <Compile Include="Assets\Scripts\GameCharacter\AICharacter.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AIKnight.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AbstractCharacter.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\IPlacable.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\ISkillUsable.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\ITargetable.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\MeleeAttackDelegate.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\RangeAttackDelegate.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\SkillDelegate.cs" />
     <Compile Include="Assets\Scripts\HUD\AbstractHUD.cs" />
+    <Compile Include="Assets\Scripts\HUD\CharacterHUDRoot.cs" />
     <Compile Include="Assets\Scripts\HUD\NumberSprite.cs" />
     <Compile Include="Assets\Scripts\Managers\SMCharacterManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SMGameManager.cs" />
@@ -107,9 +111,7 @@
     <Compile Include="Assets\Scripts\Managers\SMTimeManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
     <Compile Include="Assets\Scripts\UI\AbstractUI.cs" />
-    <Compile Include="Assets\Scripts\HUD\CharacterHUDRoot.cs" />
     <Compile Include="Assets\Scripts\UI\PauseResumeButton.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

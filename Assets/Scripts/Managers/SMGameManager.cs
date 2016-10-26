@@ -38,13 +38,18 @@ namespace SoftwareModeling.Managers
             }
 
             SMInputManager.getInstance().onInput += (SMInputTypes t) => {
-                switch (gameState)
+                switch( t )
                 {
-                    case SMGameState.IN_GAME:
-                        changeState(SMGameState.PAUSED);
-                        break;
-                    case SMGameState.PAUSED:
-                        changeState(SMGameState.IN_GAME);
+                    case SMInputTypes.PAUSE_BTN:
+                        switch (gameState)
+                        {
+                            case SMGameState.IN_GAME:
+                                changeState(SMGameState.PAUSED);
+                                break;
+                            case SMGameState.PAUSED:
+                                changeState(SMGameState.IN_GAME);
+                                break;
+                        }
                         break;
                 }
             };

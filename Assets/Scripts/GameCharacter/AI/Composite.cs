@@ -6,7 +6,7 @@ namespace SoftwareModeling.GameCharacter.AI
     abstract public class Composite : AbstractAINode
     {
         private List<AbstractAINode> _children;
-        private AICharacter _target;
+        private ITargetable _target;
 
         public Composite()
         {
@@ -29,7 +29,7 @@ namespace SoftwareModeling.GameCharacter.AI
             }
         }
 
-        public AICharacter target
+        public ITargetable target
         {
             get
             {
