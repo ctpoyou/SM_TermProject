@@ -14,6 +14,7 @@ namespace SoftwareModeling.GameCharacter
     abstract public class AICharacter : AbstractCharacter, ISkillUsable
     {
         private NavMeshAgent _navAgent;
+        private TrailRenderer _trailRenderer;
         private List<SkillDelegate> _skills;
         private AbstractAINode _AIRoot;
 
@@ -26,6 +27,7 @@ namespace SoftwareModeling.GameCharacter
             _skills = new List<SkillDelegate>();
             _navAgent = GetComponent<NavMeshAgent>();
             _hudRoot = GetComponentInChildren<CharacterHUDRoot>();
+            _trailRenderer = GetComponent<TrailRenderer>();
 
             switch( this. tag)
             {
@@ -69,6 +71,7 @@ namespace SoftwareModeling.GameCharacter
 
         private void onDestroyed( ITargetable self_ )
         {
+            Destroy(_trailRenderer);
             _navAgent.Stop();
         }
 

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4380245501497058}
   - component: {fileID: 212807771478073302}
+  - component: {fileID: 111437986210219008}
   m_Layer: 0
   m_Name: Number6
   m_TagString: Untagged
@@ -40,6 +41,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!111 &111437986210219008
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1409520772209252}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6f192236de3ff7b46834235eb82855bb, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6f192236de3ff7b46834235eb82855bb, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!212 &212807771478073302
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -72,6 +88,6 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300012, guid: 61f171ec074acc045b30c3ad568e2646, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0

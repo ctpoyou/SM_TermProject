@@ -13,6 +13,7 @@ namespace SoftwareModeling.GameCharacter
     {
         void attacked(ISkillUsable from_, double dmg_);
         bool isAlive { get; }
+        double hitPoint { get; set; }
         event onDestroyDelegate onDestroy;
         event onHitDelegate onHit;
     }

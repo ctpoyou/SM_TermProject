@@ -12,7 +12,7 @@ namespace SoftwareModeling.GameCharacter
         public double _maxHitPoint;
         private double _hitPoint;
 
-        private Transform _transform;
+        //private Transform _transform;
         private FactionEnum _faction;
 
         private event onDestroyDelegate _onDestroy;
@@ -20,7 +20,7 @@ namespace SoftwareModeling.GameCharacter
 
         protected override void Awake()
         {
-            _transform = transform;
+            //_transform = transform;
         }
 
         #region peripherals
@@ -29,12 +29,12 @@ namespace SoftwareModeling.GameCharacter
         {
             get
             {
-                return _transform.position;
+                return transform.position;
             }
 
             set
             {
-                _transform.position = value;
+                transform.position = value;
             }
         }
 
