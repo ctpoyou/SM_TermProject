@@ -155,11 +155,23 @@ namespace SoftwareModeling.GameCharacter.AI
             {
                 nodeType = new UseSkillTo(2);
             }
+            else if(nodeName.Contains("is low health"))
+            {
+                nodeType = new AbstractAINode();
+            }
+            else if(nodeName.Contains("find low health"))
+            {
+                nodeType = new AbstractAINode();
+            }
+            else
+            {
+                nodeType = new AbstractAINode();
+            }
         }
 
         public AINode()
         {
-
+            nodeType = new AbstractAINode();
         }
 
         public virtual void setNode(string nodeName)
@@ -183,6 +195,14 @@ namespace SoftwareModeling.GameCharacter.AI
             else if (nodeName.Contains("do skill"))
             {
                 nodeType = new UseSkillTo(2);
+            }
+            else if (nodeName.Contains("is low health"))
+            {
+                nodeType = new AbstractAINode();
+            }
+            else if (nodeName.Contains("find low health"))
+            {
+                nodeType = new AbstractAINode();
             }
         }
 
