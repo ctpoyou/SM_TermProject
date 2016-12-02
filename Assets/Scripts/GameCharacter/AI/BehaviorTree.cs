@@ -74,6 +74,7 @@ namespace SoftwareModeling.GameCharacter.AI
             }
 
             Composite composite;
+            string rootId;
             for (int i = 0; i < idList.Count; i++)
             {
                 if (idTable[idList[i]].getName().Equals("sequencer"))
@@ -90,12 +91,16 @@ namespace SoftwareModeling.GameCharacter.AI
                     for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
                     {
                         //Debug.Break();
-                        rootAiNode = composite;
                         Debug.Log(idTable[idList[i]].getChild(j).getNode());
-                        rootAiNode.addChild(idTable[idList[i]].getChild(j).getNode());
+                        composite.addChild(idTable[idList[i]].getChild(j).getNode());
                     }
                 }
+                else if(idTable[idList[i]].getName().Equals("root"))
+                {
+                    rootId = idList[i];
+                }
             }
+            rootAiNode = idTable[rootId].getChild(0).getNode();
         }
 
         public AbstractAINode getRoot()
@@ -158,6 +163,7 @@ namespace SoftwareModeling.GameCharacter.AI
                     break;
                 case "root":
                     nodeType = new Selector();
+                    break;
                 default:
                     Debug.LogError( "No such node : " + nodeName);
                     break;
