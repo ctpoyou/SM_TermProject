@@ -156,6 +156,8 @@ namespace SoftwareModeling.GameCharacter.AI
                 case "selector":
                     nodeType = new Selector();
                     break;
+                case "root":
+                    nodeType = new Selector();
                 default:
                     Debug.LogError( "No such node : " + nodeName);
                     break;
