@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using UnityEngine;
 
 namespace SoftwareModeling.GameCharacter.AI
 {
-    class behaviorTree
+    class BehaviorTree
     {
 
         private XmlDocument xmlDoc = new XmlDocument();
@@ -16,36 +17,10 @@ namespace SoftwareModeling.GameCharacter.AI
         private Composite rootAiNode;
         private List<String> idList = new List<string>();
 
-        public behaviorTree(string path)
+        public BehaviorTree(string xml)
         {
-            try
-            {
-                xmlDoc.Load(path);
-                makeTree();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
-        public behaviorTree()
-        {
-
-        }
-
-        public void setXmlPath(string path)
-        {
-            try
-            {
-                xmlDoc.Load(path);
-                makeTree();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
+            xmlDoc.LoadXml(xml);
+            makeTree();
         }
 
         private void makeTree()
@@ -61,6 +36,7 @@ namespace SoftwareModeling.GameCharacter.AI
                 if (nodeName.Equals("root"))
                 {
                     AIComposite tmpComposite = new AIComposite(nodeName);
+                    
                     comTable.Add(nodeId, tmpComposite);
                     idTable.Add(nodeId, tmpComposite);
                 }
@@ -97,20 +73,25 @@ namespace SoftwareModeling.GameCharacter.AI
                 targetNdoe.setParent(ref sourceNode);
             }
 
+            Composite composite;
             for (int i = 0; i < idList.Count; i++)
             {
                 if (idTable[idList[i]].getName().Equals("sequencer"))
                 {
+                    composite = comTable[idList[i]].getNode() as Composite;
                     for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
                     {
-                        comTable[idList[i]].getNode().addChild(comTable[idList[i]].getChild(j).getNode());
+                        composite.addChild(comTable[idList[i]].getChild(j).getNode());
                     }
                 }
                 else if (idTable[idList[i]].getName().Equals("selector"))
                 {
+                    composite = comTable[idList[i]].getNode() as Composite;
                     for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
                     {
-                        rootAiNode = comTable[idList[i]].getNode();
+                        //Debug.Break();
+                        rootAiNode = composite;
+                        Debug.Log(idTable[idList[i]].getChild(j).getNode());
                         rootAiNode.addChild(idTable[idList[i]].getChild(j).getNode());
                     }
                 }
@@ -135,26 +116,7 @@ namespace SoftwareModeling.GameCharacter.AI
         {
             name = nodeName;
 
-            if (nodeName.Equals("move"))
-            {
-                nodeType = new MoveTo(0);
-            }
-            else if (nodeName.Equals("find enemy"))
-            {
-                nodeType = new FindNearestEnemy();
-            }
-            else if (nodeName.Contains("do attack"))
-            {
-                nodeType = new UseSkillTo(0);
-            }
-            else if (nodeName.Contains("do defense"))
-            {
-                nodeType = new UseSkillTo(1);
-            }
-            else if (nodeName.Contains("do skill"))
-            {
-                nodeType = new UseSkillTo(2);
-            }
+            setNode(name);
         }
 
         public AINode()
@@ -164,25 +126,39 @@ namespace SoftwareModeling.GameCharacter.AI
 
         public virtual void setNode(string nodeName)
         {
-            if (nodeName.Equals("move"))
+
+            switch( nodeName )
             {
-                nodeType = new MoveTo(0);
-            }
-            else if (nodeName.Equals("find enemy"))
-            {
-                nodeType = new FindNearestEnemy();
-            }
-            else if (nodeName.Contains("do attack"))
-            {
-                nodeType = new UseSkillTo(0);
-            }
-            else if (nodeName.Contains("do defense"))
-            {
-                nodeType = new UseSkillTo(1);
-            }
-            else if (nodeName.Contains("do skill"))
-            {
-                nodeType = new UseSkillTo(2);
+                case "move":
+                    nodeType = new MoveTo(0);
+                    break;
+                case "find enemy":
+                    nodeType = new FindNearestEnemy();
+                    break;
+                case "do attack":
+                    nodeType = new UseSkillTo(0);
+                    break;
+                case "do defense":
+                    nodeType = new UseSkillTo(1);
+                    break;
+                case "do skill":
+                    nodeType = new UseSkillTo(2);
+                    break;
+                case "is low health":
+                    nodeType = new isHealthLow();
+                    break;
+                case "find low health":
+                    nodeType = new FindLowHealthAlly();
+                    break;
+                case "sequencer":
+                    nodeType = new Sequencer();
+                    break;
+                case "selector":
+                    nodeType = new Selector();
+                    break;
+                default:
+                    Debug.LogError( "No such node : " + nodeName);
+                    break;
             }
         }
 
@@ -254,80 +230,12 @@ namespace SoftwareModeling.GameCharacter.AI
         {
             return childList[index];
         }
-
-        /*
-                public void printInfo()
-                {
-                    Console.WriteLine("name : " + name);
-                    if(nodeType != null)
-                    {
-                        Console.WriteLine("it is !" + nodeType.type);
-                    }
-                    else
-                    {
-                        Console.WriteLine("null!" + name);
-                    }
-
-                    if(parentNode != null)
-                    {
-                        Console.WriteLine("parent : " + parentNode.getName());
-                    }
-                    else
-                    {
-                        Console.WriteLine("parent : no parent");
-                    }
-
-                    if(childList.Count != 0)
-                    {
-                        for (int i = 0; i < childList.Count; i++)
-                        {
-                            Console.WriteLine("child " + i + " :" + childList[i].getName());
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("child : no child");
-                    }
-
-                }
-        */
     }
 
     class AIComposite : AINode
     {
-        private new Composite nodeType;
-
-        public AIComposite(string nodeName)
+        public AIComposite(string nodeName) : base(nodeName)
         {
-            name = nodeName;
-            if (nodeName.Equals("sequencer"))
-            {
-                nodeType = new Sequencer();
-            }
-            else if (nodeName.Equals("selector"))
-            {
-                nodeType = new Selector();
-            }
         }
-
-        public override void setNode(string nodeName)
-        {
-            if (nodeName.Equals("sequencer"))
-            {
-                nodeType = new Sequencer();
-            }
-            else if (nodeName.Equals("selector"))
-            {
-                nodeType = new Selector();
-            }
-
-        }
-
-        public new Composite getNode()
-        {
-            return nodeType;
-        }
-
-
     }
 }

@@ -88,7 +88,9 @@
     <Compile Include="Assets\Scripts\GameCharacter\AI\AbstractAINode.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\BehaviorTree.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\Composite.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\AI\FindLowHealthAlly.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\FindNearestEnemy.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\AI\isHealthLow.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\MoveTo.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\Selector.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\Sequencer.cs" />

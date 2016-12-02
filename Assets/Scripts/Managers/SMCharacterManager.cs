@@ -83,20 +83,43 @@ namespace SoftwareModeling.Managers
         }
         #endregion
 
-        public AICharacter getNearestEnemyFrom(AICharacter c)
+        private List<AICharacter> getParty( FactionEnum faction_)
         {
-            List<AICharacter> party;
-
-            switch (c.faction)
+            switch (faction_)
             {
                 case FactionEnum.Ally:
-                    party = enemyParty;
-                    break;
+                    return enemyParty;
 
                 default:
-                    party = playerParty;
-                    break;
+                    return playerParty;
             }
+        }
+
+        public AICharacter getLowestHealthAlly(AICharacter c )
+        {
+            List<AICharacter> party = getParty(c.faction);
+
+            if (party.Count == 0)
+            {
+                return null;
+            }
+
+            AICharacter minHealthCharacter = party[0];
+
+            for (int i = 1; i < party.Count; ++i)
+            {
+                if( minHealthCharacter.hitPoint > party[i].hitPoint)
+                {
+                    minHealthCharacter = party[i];
+                }
+            }
+
+            return minHealthCharacter;
+        }
+
+        public AICharacter getNearestEnemyFrom(AICharacter c)
+        {
+            List<AICharacter> party = getParty(c.faction);
 
             if( party.Count == 0 )
             {

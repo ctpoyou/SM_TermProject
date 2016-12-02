@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SoftwareModeling.GameCharacter
 {
-    public interface ISkillUsable : ITargetable
+    public interface ISkillUsable : IPlacable
     {
         bool useSkillTo(int sklIdx_, ITargetable target_);
     }
