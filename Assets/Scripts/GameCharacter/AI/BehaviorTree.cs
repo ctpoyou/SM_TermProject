@@ -14,8 +14,8 @@ namespace SoftwareModeling.GameCharacter.AI
         private XmlNodeList edgeList;
         private Dictionary<string, AINode> idTable = new Dictionary<string, AINode>();
         private Dictionary<string, AIComposite> comTable = new Dictionary<string, AIComposite>();
-        private Composite rootAiNode;
-        private List<String> idList = new List<string>();
+        private AbstractAINode rootAiNode;
+        private List<string> idList = new List<string>();
 
         public BehaviorTree(string xml)
         {
@@ -74,7 +74,7 @@ namespace SoftwareModeling.GameCharacter.AI
             }
 
             Composite composite;
-            string rootId;
+            string rootId = null;
             for (int i = 0; i < idList.Count; i++)
             {
                 if (idTable[idList[i]].getName().Equals("sequencer"))
@@ -90,8 +90,6 @@ namespace SoftwareModeling.GameCharacter.AI
                     composite = comTable[idList[i]].getNode() as Composite;
                     for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
                     {
-                        //Debug.Break();
-                        Debug.Log(idTable[idList[i]].getChild(j).getNode());
                         composite.addChild(idTable[idList[i]].getChild(j).getNode());
                     }
                 }
