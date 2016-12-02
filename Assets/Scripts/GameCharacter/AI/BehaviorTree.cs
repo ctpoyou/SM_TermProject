@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-namespace BehaviorTree
+namespace SoftwareModeling.GameCharacter.AI
 {
     class behaviorTree
     {
+
         private XmlDocument xmlDoc = new XmlDocument();
         private XmlNodeList nodeList;
         private XmlNodeList edgeList;
-        private AINode root;
         private Dictionary<string, AINode> idTable = new Dictionary<string, AINode>();
+        private Dictionary<string, AIComposite> comTable = new Dictionary<string, AIComposite>();
+        private Composite rootAiNode;
+        private List<String> idList = new List<string>();
 
         public behaviorTree(string path)
         {
@@ -20,7 +23,7 @@ namespace BehaviorTree
                 xmlDoc.Load(path);
                 makeTree();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -38,11 +41,11 @@ namespace BehaviorTree
                 xmlDoc.Load(path);
                 makeTree();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-           
+
         }
 
         private void makeTree()
@@ -55,12 +58,25 @@ namespace BehaviorTree
                 string nodeName;
                 nodeId = nodeList.Item(i).Attributes.GetNamedItem("xmi:id").Value;
                 nodeName = nodeList.Item(i).Attributes.GetNamedItem("name").Value;
-                AINode tmpNode = new AINode(nodeName);
-                idTable.Add(nodeId, tmpNode);
                 if (nodeName.Equals("root"))
                 {
-                    root = tmpNode;
+                    AIComposite tmpComposite = new AIComposite(nodeName);
+                    comTable.Add(nodeId, tmpComposite);
+                    idTable.Add(nodeId, tmpComposite);
                 }
+                else if (nodeName.Equals("sequencer") || (nodeName.Equals("selector")))
+                {
+                    AIComposite tmpComposite = new AIComposite(nodeName);
+                    comTable.Add(nodeId, tmpComposite);
+                    idTable.Add(nodeId, tmpComposite);
+                }
+                else
+                {
+                    AINode tmpNode = new AINode(nodeName);
+                    tmpNode.setNode(nodeName);
+                    idTable.Add(nodeId, tmpNode);
+                }
+                idList.Add(nodeId);
             }
 
             for (int i = 0; i < edgeList.Count; i++)
@@ -76,32 +92,103 @@ namespace BehaviorTree
                 targetId = edgeList.Item(i).Attributes.GetNamedItem("target").Value;
                 sourceNode = idTable[sourceId];
                 targetNdoe = idTable[targetId];
+
                 sourceNode.addChild(chiledNum, ref targetNdoe);
                 targetNdoe.setParent(ref sourceNode);
             }
+
+            for (int i = 0; i < idList.Count; i++)
+            {
+                if (idTable[idList[i]].getName().Equals("sequencer"))
+                {
+                    for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
+                    {
+                        comTable[idList[i]].getNode().addChild(comTable[idList[i]].getChild(j).getNode());
+                    }
+                }
+                else if (idTable[idList[i]].getName().Equals("selector"))
+                {
+                    for (int j = 0; j < idTable[idList[i]].getChildList().Count; j++)
+                    {
+                        rootAiNode = comTable[idList[i]].getNode();
+                        rootAiNode.addChild(idTable[idList[i]].getChild(j).getNode());
+                    }
+                }
+            }
         }
 
-        public AINode returnRoot()
+        public AbstractAINode getRoot()
         {
-            return root;
+            return rootAiNode;
         }
     }
 
     class AINode
     {
-        private string name;
-        private AINode parentNode;
-        private Dictionary<int, AINode> childList = new Dictionary<int, AINode>();
-        private int childCount = 0;
+        protected string name;
+        protected AINode parentNode;
+        protected Dictionary<int, AINode> childList = new Dictionary<int, AINode>();
+        protected int childCount = 0;
+        protected AbstractAINode nodeType;
 
-        public AINode(string inputName)
+        public AINode(string nodeName)
         {
-            name = inputName;
+            name = nodeName;
+
+            if (nodeName.Equals("move"))
+            {
+                nodeType = new MoveTo(0);
+            }
+            else if (nodeName.Equals("find enemy"))
+            {
+                nodeType = new FindNearestEnemy();
+            }
+            else if (nodeName.Contains("do attack"))
+            {
+                nodeType = new UseSkillTo(0);
+            }
+            else if (nodeName.Contains("do defense"))
+            {
+                nodeType = new UseSkillTo(1);
+            }
+            else if (nodeName.Contains("do skill"))
+            {
+                nodeType = new UseSkillTo(2);
+            }
         }
 
         public AINode()
         {
 
+        }
+
+        public virtual void setNode(string nodeName)
+        {
+            if (nodeName.Equals("move"))
+            {
+                nodeType = new MoveTo(0);
+            }
+            else if (nodeName.Equals("find enemy"))
+            {
+                nodeType = new FindNearestEnemy();
+            }
+            else if (nodeName.Contains("do attack"))
+            {
+                nodeType = new UseSkillTo(0);
+            }
+            else if (nodeName.Contains("do defense"))
+            {
+                nodeType = new UseSkillTo(1);
+            }
+            else if (nodeName.Contains("do skill"))
+            {
+                nodeType = new UseSkillTo(2);
+            }
+        }
+
+        public virtual AbstractAINode getNode()
+        {
+            return nodeType;
         }
 
         public string getName()
@@ -126,12 +213,12 @@ namespace BehaviorTree
 
         public void addChild(ref AINode inputNode)
         {
-            if(childList.ContainsKey(childCount))
+            if (childList.ContainsKey(childCount))
             {
                 int i = 0;
-                while(true)
+                while (true)
                 {
-                    if(childList.ContainsKey(i))
+                    if (childList.ContainsKey(i))
                     {
                         i++;
                     }
@@ -147,8 +234,8 @@ namespace BehaviorTree
             {
                 childList.Add(childCount, inputNode);
             }
-            
-            
+
+
             childCount += 1;
         }
 
@@ -165,35 +252,82 @@ namespace BehaviorTree
 
         public AINode getChild(int index)
         {
-            return (AINode)childList[index];
+            return childList[index];
         }
-        
 
-        public void printInfo()
-        {
-            Console.WriteLine("name : " + name);
-            if(parentNode != null)
-            {
-                Console.WriteLine("parent : " + parentNode.getName());
-            }
-            else
-            {
-                Console.WriteLine("parent : no parent");
-            }
-
-            if(childList.Count != 0)
-            {
-                for (int i = 0; i < childList.Count; i++)
+        /*
+                public void printInfo()
                 {
-                    Console.WriteLine("child " + i + " :" + childList[i].getName());
+                    Console.WriteLine("name : " + name);
+                    if(nodeType != null)
+                    {
+                        Console.WriteLine("it is !" + nodeType.type);
+                    }
+                    else
+                    {
+                        Console.WriteLine("null!" + name);
+                    }
+
+                    if(parentNode != null)
+                    {
+                        Console.WriteLine("parent : " + parentNode.getName());
+                    }
+                    else
+                    {
+                        Console.WriteLine("parent : no parent");
+                    }
+
+                    if(childList.Count != 0)
+                    {
+                        for (int i = 0; i < childList.Count; i++)
+                        {
+                            Console.WriteLine("child " + i + " :" + childList[i].getName());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("child : no child");
+                    }
+
                 }
-            }
-            else
+        */
+    }
+
+    class AIComposite : AINode
+    {
+        private new Composite nodeType;
+
+        public AIComposite(string nodeName)
+        {
+            name = nodeName;
+            if (nodeName.Equals("sequencer"))
             {
-                Console.WriteLine("child : no child");
+                nodeType = new Sequencer();
             }
-            
+            else if (nodeName.Equals("selector"))
+            {
+                nodeType = new Selector();
+            }
         }
+
+        public override void setNode(string nodeName)
+        {
+            if (nodeName.Equals("sequencer"))
+            {
+                nodeType = new Sequencer();
+            }
+            else if (nodeName.Equals("selector"))
+            {
+                nodeType = new Selector();
+            }
+
+        }
+
+        public new Composite getNode()
+        {
+            return nodeType;
+        }
+
 
     }
 }
