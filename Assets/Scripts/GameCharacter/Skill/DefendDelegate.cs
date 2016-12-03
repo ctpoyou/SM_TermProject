@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace SoftwareModeling.GameCharacter.Skill
 {
@@ -12,7 +13,7 @@ namespace SoftwareModeling.GameCharacter.Skill
         ISkillUsable _defenderUser;
         ITargetable _target;
 
-        public DefendDelegate(ITargetable defender_, double coeff_, double cooldown_, double range_) : base( coeff_, cooldown_, range_ )
+        public DefendDelegate(ITargetable defender_, double coeff_, double cooldown_, double range_, double delay_) : base( coeff_, cooldown_, range_, delay_ )
         {
             _defenderTarget = defender_;
         }
@@ -21,6 +22,7 @@ namespace SoftwareModeling.GameCharacter.Skill
         {
             _defenderUser = from_;
             _target = to_;
+            
             to_.onHit += onTargetHit;
 
             return true;
@@ -33,6 +35,8 @@ namespace SoftwareModeling.GameCharacter.Skill
             {
                 _target.hitPoint += dmg_;
                 _defenderTarget.attacked(from_, dmg_);
+                updateLastSkillUse(time_);
+                applyDelay(from_);
             }
             else
             {

@@ -19,6 +19,7 @@ namespace SoftwareModeling.GameCharacter
         private AbstractAINode _AIRoot;
 
         private CharacterHUDRoot _hudRoot;
+        private double _delay = 0;
 
         #region initialize
         protected override void Awake()
@@ -50,6 +51,11 @@ namespace SoftwareModeling.GameCharacter
 
         protected override void Update()
         {
+            if( !isReady() )
+            {
+                _delay -= SMTimeManager.getInstance().deltaTime;
+            }
+
             switch( SMGameManager.getInstance().gameState )
             {
                 case SMGameState.IN_GAME:
@@ -66,6 +72,7 @@ namespace SoftwareModeling.GameCharacter
         #region peripherals
         private void onAttacked( ISkillUsable from_, double dmg_ )
         {
+            hitPoint -= dmg_;
             _hudRoot.showNumber((int)dmg_);
         }
 
@@ -110,6 +117,16 @@ namespace SoftwareModeling.GameCharacter
         protected void addSkill( SkillDelegate skill_ )
         {
             _skills.Add(skill_);
+        }
+
+        public void setDelay(double delay_)
+        {
+            _delay = delay_;
+        }
+
+        public bool isReady()
+        {
+            return _delay <= 0;
         }
         #endregion
     }

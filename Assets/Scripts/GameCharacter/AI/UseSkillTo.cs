@@ -16,7 +16,14 @@ namespace SoftwareModeling.GameCharacter.AI
 
         public override bool executeNode(AICharacter self_)
         {
-            return self_.useSkillTo(_sklIdx, parent.target);
+            if( parent.target != null && self_.isReady())
+            {
+                return self_.useSkillTo(_sklIdx, parent.target);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

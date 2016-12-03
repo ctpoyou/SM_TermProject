@@ -97,7 +97,17 @@ namespace SoftwareModeling.Managers
 
         public AICharacter getLowestHealthAlly(AICharacter c )
         {
-            List<AICharacter> party = getParty(c.faction);
+            List<AICharacter> party = new List<AICharacter>( getParty(c.faction));
+
+            foreach( AICharacter aiCharacter in party )
+            {
+                if( aiCharacter.GetInstanceID() == c.GetInstanceID())
+                {
+                    party.Remove(aiCharacter);
+                    Debug.Break();
+                    break;
+                }
+            }
 
             if (party.Count == 0)
             {

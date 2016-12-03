@@ -8,5 +8,7 @@ namespace SoftwareModeling.GameCharacter
     public interface ISkillUsable : IPlacable
     {
         bool useSkillTo(int sklIdx_, ITargetable target_);
+        void setDelay(double delay_);
+        bool isReady();
     }
 }

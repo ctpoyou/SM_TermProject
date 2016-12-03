@@ -11,7 +11,7 @@ namespace SoftwareModeling.GameCharacter.AI
         {
             foreach (AbstractAINode child in children)
             {
-                if (executeNode(self_))
+                if (child.executeNode(self_))
                 {
                     return true;
                 }

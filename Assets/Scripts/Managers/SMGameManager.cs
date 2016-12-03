@@ -62,9 +62,11 @@ namespace SoftwareModeling.Managers
             {
                 case SMGameState.PAUSED:
                     Time.timeScale = 0;
+                    SMTimeManager.getInstance().timescale = 0;
                     break;
                 case SMGameState.IN_GAME:
                     Time.timeScale = 1;
+                    SMTimeManager.getInstance().timescale = 1;
                     break;
             }
 

@@ -79,8 +79,6 @@ namespace SoftwareModeling.GameCharacter
                 _onHit(from_, dmg_);
             }
 
-            hitPoint -= dmg_;
-
             if (!isAlive)
             {
                 if (_onDestroy != null)

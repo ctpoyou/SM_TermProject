@@ -334,6 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitPoint: 100
+  _attackDmg: 20
 --- !u!195 &195616925583564104
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -409,7 +410,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 339587724
+  randomSeed: 314190165
   InitialModule:
     serializedVersion: 3
     enabled: 1

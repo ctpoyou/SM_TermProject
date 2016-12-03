@@ -7,7 +7,7 @@ namespace SoftwareModeling.GameCharacter
 {
     public class AIKnight : AICharacter
     {
-        public int _attackDmg = 40;
+        public int _attackDmg = 20;
 
         private ParticleSystem _particleSystem;
         protected override void Awake()
@@ -18,8 +18,9 @@ namespace SoftwareModeling.GameCharacter
             _particleSystem = GetComponent<ParticleSystem>();
 
             hitPoint = _maxHitPoint;
-            addSkill(new MeleeAttackDelegate(_attackDmg, 3, 3));
-            addSkill(new DefendDelegate(this, 0, 10, 10));
+            addSkill(new MeleeAttackDelegate(_attackDmg, 3, 3, 1));
+            addSkill(new DefendDelegate(this, 0, 10, 10, 1));
+            addSkill(new MeleeAttackDelegate(_attackDmg * 2, 10, 3, 1));
 
             WWW xmlFile = new WWW("file:///E:/UnityWorkspace/SM_TermP/Assets/Resources/PreworkedAI/tanker.xmi");
             while (!xmlFile.isDone)

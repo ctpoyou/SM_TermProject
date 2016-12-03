@@ -20,7 +20,7 @@ namespace SoftwareModeling.Managers
 
         private SMTimeManager()
         {
-
+            _timescale = Time.timeScale;
         }
 
         public float currentTime

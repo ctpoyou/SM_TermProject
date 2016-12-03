@@ -14,6 +14,8 @@ namespace SoftwareModeling.GameCharacter.AI
         private XmlNodeList edgeList;
         private Dictionary<string, AINode> idTable = new Dictionary<string, AINode>();
         private Dictionary<string, AIComposite> comTable = new Dictionary<string, AIComposite>();
+        //private Dictionary<string, AbstractAINode> idTable;
+        //private Dictionary<string, string> idToName;
         private AbstractAINode rootAiNode;
         private List<string> idList = new List<string>();
 
@@ -23,10 +25,75 @@ namespace SoftwareModeling.GameCharacter.AI
             makeTree();
         }
 
+        private AbstractAINode nodeFactory( string name )
+        {
+            switch (name)
+            {
+                case "move":
+                    return new MoveTo(3);
+                case "find enemy":
+                    return new FindNearestEnemy();
+                case "do attack":
+                    return new UseSkillTo(0);
+                case "do defense":
+                    return new UseSkillTo(1);
+                case "do skill":
+                    return new UseSkillTo(2);
+                case "is low health":
+                    return new isHealthLow();
+                case "find low health":
+                    return new FindLowHealthAlly();
+                case "sequencer":
+                    return new Sequencer();
+                case "selector":
+                    return new Selector();
+                default:
+                    Debug.LogError("No such node : " + name);
+                    return null;
+            }
+        }
+
         private void makeTree()
         {
             nodeList = xmlDoc.GetElementsByTagName("node");
             edgeList = xmlDoc.GetElementsByTagName("edge");
+
+            /*AbstractAINode btNode;
+            string name;
+            string id;
+
+            idTable = new Dictionary<string, AbstractAINode>();
+            idToName = new Dictionary<string, string>();
+            foreach( XmlElement node in nodeList)
+            {
+                id = node.Attributes.GetNamedItem("xmi:id").Value;
+                name = node.Attributes.GetNamedItem("name").Value;
+                idToName.Add(id, name);
+
+                if (name != "root")
+                {
+                    btNode = nodeFactory(name);
+                    idTable.Add(id, btNode);
+                }
+            }
+
+            string src, dst;
+            foreach( XmlElement edge in edgeList)
+            {
+                src = edge.Attributes.GetNamedItem("source").Value;
+                dst = edge.Attributes.GetNamedItem("target").Value;
+
+                if (idToName[src] == "root")
+                {
+                    rootAiNode = idTable[dst];
+                }
+                else
+                {
+                    (idTable[src] as Composite).addChild(idTable[dst]);
+                }
+            }
+            */
+            
             for (int i = 0; i < nodeList.Count; i++)
             {
                 string nodeId;
@@ -133,7 +200,7 @@ namespace SoftwareModeling.GameCharacter.AI
             switch( nodeName )
             {
                 case "move":
-                    nodeType = new MoveTo(0);
+                    nodeType = new MoveTo(3);
                     break;
                 case "find enemy":
                     nodeType = new FindNearestEnemy();
