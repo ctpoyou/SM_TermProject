@@ -88,26 +88,30 @@ namespace SoftwareModeling.Managers
             switch (faction_)
             {
                 case FactionEnum.Ally:
-                    return enemyParty;
+                    return playerParty;
 
                 default:
-                    return playerParty;
+                    return enemyParty;
             }
         }
 
-        public AICharacter getLowestHealthAlly(AICharacter c )
+        private List<AICharacter> getEnemyParty( FactionEnum faction_ )
         {
-            List<AICharacter> party = new List<AICharacter>( getParty(c.faction));
-
-            foreach( AICharacter aiCharacter in party )
+            switch (faction_)
             {
-                if( aiCharacter.GetInstanceID() == c.GetInstanceID())
-                {
-                    party.Remove(aiCharacter);
-                    Debug.Break();
-                    break;
-                }
+                case FactionEnum.Enemy:
+                    return playerParty;
+
+                default:
+                    return enemyParty;
             }
+        }
+
+        public AICharacter getLowestHealthAlly(AICharacter c_ )
+        {
+            List<AICharacter> party = new List<AICharacter>( getParty(c_.faction));
+
+            party.Remove(c_);
 
             if (party.Count == 0)
             {
@@ -127,9 +131,9 @@ namespace SoftwareModeling.Managers
             return minHealthCharacter;
         }
 
-        public AICharacter getNearestEnemyFrom(AICharacter c)
+        public AICharacter getNearestEnemyFrom(AICharacter c_)
         {
-            List<AICharacter> party = getParty(c.faction);
+            List<AICharacter> party = getEnemyParty(c_.faction);
 
             if( party.Count == 0 )
             {
@@ -137,12 +141,12 @@ namespace SoftwareModeling.Managers
             }
 
             AICharacter minDistEnemy = party[0];
-            float minDist = Vector2.Distance(c.position, minDistEnemy.position);
+            float minDist = Vector2.Distance(c_.position, minDistEnemy.position);
             float dist;
 
             for( int i = 1; i < party.Count; ++ i)
             {
-                dist = Vector2.Distance(party[i].position, c.position);
+                dist = Vector2.Distance(party[i].position, c_.position);
                 if (minDist > dist )
                 {
                     minDist = dist;

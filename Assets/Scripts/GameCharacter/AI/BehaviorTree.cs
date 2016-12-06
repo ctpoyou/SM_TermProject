@@ -25,34 +25,6 @@ namespace SoftwareModeling.GameCharacter.AI
             makeTree();
         }
 
-        private AbstractAINode nodeFactory( string name )
-        {
-            switch (name)
-            {
-                case "move":
-                    return new MoveTo(3);
-                case "find enemy":
-                    return new FindNearestEnemy();
-                case "do attack":
-                    return new UseSkillTo(0);
-                case "do defense":
-                    return new UseSkillTo(1);
-                case "do skill":
-                    return new UseSkillTo(2);
-                case "is low health":
-                    return new isHealthLow();
-                case "find low health":
-                    return new FindLowHealthAlly();
-                case "sequencer":
-                    return new Sequencer();
-                case "selector":
-                    return new Selector();
-                default:
-                    Debug.LogError("No such node : " + name);
-                    return null;
-            }
-        }
-
         private void makeTree()
         {
             nodeList = xmlDoc.GetElementsByTagName("node");

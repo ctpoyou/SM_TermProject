@@ -19,6 +19,8 @@ namespace SoftwareModeling.GameCharacter
         private AbstractAINode _AIRoot;
 
         private CharacterHUDRoot _hudRoot;
+        private ParticleSystem _particleSystem;
+        private Animator _animator;
         private double _delay = 0;
 
         #region initialize
@@ -29,8 +31,11 @@ namespace SoftwareModeling.GameCharacter
             _navAgent = GetComponent<NavMeshAgent>();
             _hudRoot = GetComponentInChildren<CharacterHUDRoot>();
             _trailRenderer = GetComponent<TrailRenderer>();
+            _animator = GetComponentInChildren<Animator>();
 
-            switch( this. tag)
+            _particleSystem = GetComponent<ParticleSystem>();
+
+            switch ( this. tag)
             {
                 case "PlayerParty":
                     faction = FactionEnum.Ally;
@@ -73,11 +78,22 @@ namespace SoftwareModeling.GameCharacter
         private void onAttacked( ISkillUsable from_, double dmg_ )
         {
             hitPoint -= dmg_;
-            _hudRoot.showNumber((int)dmg_);
-        }
+
+            if( dmg_ > 0 )
+            {
+                _particleSystem.Simulate(0);
+                _particleSystem.Play();
+                _hudRoot.showNumber((int)dmg_, Color.red);
+            }
+            else
+            {
+                _hudRoot.showNumber((int)-dmg_, Color.green);
+            }
+    }
 
         private void onDestroyed( ITargetable self_ )
         {
+            _animator.SetBool("Dead", true);
             Destroy(_trailRenderer);
             _navAgent.Stop();
         }
@@ -99,9 +115,11 @@ namespace SoftwareModeling.GameCharacter
         {
             if( Vector2.Distance( dest, position) < stopDistance )
             {
+                _animator.SetBool("Run", false);
                 return true;
             }
 
+            _animator.SetBool("Run", true);
             _navAgent.stoppingDistance = stopDistance;
             _navAgent.SetDestination(dest);
 

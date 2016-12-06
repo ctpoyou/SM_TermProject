@@ -12,6 +12,12 @@ namespace SoftwareModeling.HUD
         public int _number;
         public float _visibleTime = 1f;
         private List<GameObject> _numbers;
+        private Color _color;
+
+        public void setColor(Color c_)
+        {
+            _color = c_;
+        }
 
         protected override void Awake()
         {
@@ -36,11 +42,14 @@ namespace SoftwareModeling.HUD
                 wrapper = new GameObject();
                 digitSprite = Instantiate(SMResourceManager.getInstance().findResource(ResourcePathConst.getNumberPath(digit)));
                 digitSprite.transform.SetParent(wrapper.transform);
+                digitSprite.GetComponent<SpriteRenderer>().color = _color;
                 wrapper.transform.SetParent(transform);
                 wrapper.transform.localPosition = new Vector3(-0.07f * digitCount, 0, 0);
                 digitSprite.transform.localPosition = Vector3.zero;
                 _numbers.Add(digitSprite);
                 digitSprite.transform.localScale = Vector3.zero;
+
+                digitSprite.transform.rotation = Camera.main.transform.rotation;
                 ++digitCount;
             } while (number > 0);
 

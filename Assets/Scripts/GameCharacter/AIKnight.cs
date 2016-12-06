@@ -9,20 +9,16 @@ namespace SoftwareModeling.GameCharacter
     {
         public int _attackDmg = 20;
 
-        private ParticleSystem _particleSystem;
         protected override void Awake()
         {
             base.Awake();
 
-
-            _particleSystem = GetComponent<ParticleSystem>();
-
             hitPoint = _maxHitPoint;
             addSkill(new MeleeAttackDelegate(_attackDmg, 3, 3, 1));
-            addSkill(new DefendDelegate(this, 0, 10, 10, 1));
-            addSkill(new MeleeAttackDelegate(_attackDmg * 2, 10, 3, 1));
+            addSkill(new DefendSelfDelegate(this, 0.7, 10, 10, 1));
+            addSkill(new DefendOtherDelegate(this, 0.7, 10, 3, 1));
 
-            WWW xmlFile = new WWW("file:///E:/UnityWorkspace/SM_TermP/Assets/Resources/PreworkedAI/tanker.xmi");
+            WWW xmlFile = new WWW("file:///" + Application.dataPath + "/../Assets/Resources/PreworkedAI/tanker.xmi");
             while (!xmlFile.isDone)
             {
                 //Debug.Log(www.progress);
@@ -30,21 +26,7 @@ namespace SoftwareModeling.GameCharacter
 
             BehaviorTree bt = new BehaviorTree(xmlFile.text);
 
-            AbstractAINode root = bt.getRoot();
-            /*new Sequencer();
-            root.addChild(new FindNearestEnemy());
-            root.addChild(new MoveTo(3));
-            root.addChild(new UseSkillTo(0));*/
-
-            AIRoot = root;
-
-            onHit += hitEffect;
-        }
-
-        private void hitEffect(ISkillUsable from_, double dmg_)
-        {
-            _particleSystem.Simulate(0);
-            _particleSystem.Play();
+            AIRoot = bt.getRoot();
         }
     }
 }
