@@ -168,11 +168,24 @@ namespace SoftwareModeling.GameCharacter.AI
 
         public virtual void setNode(string nodeName)
         {
+            int distance = 0;
+            if(nodeName.Contains("#"))
+            {
+                try
+                {
+                    distance = Int32.Parse(nodeName.Split("#")[1]);
+                }
+                catch (FormatException e)
+                {
 
-            switch( nodeName )
+                }
+                nodeName = nodeName.Split("#")[0];
+            }
+           
+            switch ( nodeName )
             {
                 case "move":
-                    nodeType = new MoveTo(3);
+                    nodeType = new MoveTo(distance);
                     break;
                 case "find enemy":
                     nodeType = new FindNearestEnemy();
