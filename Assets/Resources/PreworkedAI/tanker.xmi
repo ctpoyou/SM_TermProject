@@ -7454,7 +7454,7 @@
 					<qualityScore value="-1"/>
 				</xmi:Extension>
 			</node>
-			<node name="move" xmi:id="0MgAK.qGAqAAAgke" xmi:type="uml:CallBehaviorAction">
+			<node name="move#3" xmi:id="0MgAK.qGAqAAAgke" xmi:type="uml:CallBehaviorAction">
 				<xmi:Extension extender="Visual Paradigm">
 					<mustIsolate xmi:value="false"/>
 					<leaf xmi:value="false"/>
@@ -7491,7 +7491,7 @@
 					<qualityScore value="-1"/>
 				</xmi:Extension>
 			</node>
-			<node name="move" xmi:id="wPT1y.qGAqAAAggY" xmi:type="uml:CallBehaviorAction">
+			<node name="move#10" xmi:id="wPT1y.qGAqAAAggY" xmi:type="uml:CallBehaviorAction">
 				<xmi:Extension extender="Visual Paradigm">
 					<mustIsolate xmi:value="false"/>
 					<leaf xmi:value="false"/>
