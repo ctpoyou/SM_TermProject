@@ -23,8 +23,8 @@ namespace SoftwareModeling.GameCharacter.Skill
 
         protected bool isSkillReady( double time_, ISkillUsable from_, ITargetable to_ )
         {
-            Debug.Log(from_);
-            Debug.Log(to_);
+            //Debug.Log(from_);
+            //Debug.Log(to_);
             return from_.isReady() && _cooldown <= time_ - _lastUsedTime && Vector2.Distance(from_.position, to_.position) <= _range;
         }
 

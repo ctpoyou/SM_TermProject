@@ -30,12 +30,13 @@ namespace SoftwareModeling.GameCharacter.Skill
 
         void onTargetHit(ISkillUsable from_, double dmg_)
         {
+            _target.onHit -= onTargetHit;
+
             double time_ = SMTimeManager.getInstance().currentTime;
             if (isSkillReady(time_, _defenderUser, _target))
             {
                 if( dmg_ > 0 )
                 {
-                    _target.onHit -= onTargetHit;
                     _target.hitPoint += dmg_;
                     _defenderTarget.attacked(from_, dmg_ * coeff);
                     updateLastSkillUse(time_);
@@ -43,10 +44,6 @@ namespace SoftwareModeling.GameCharacter.Skill
                     applyDelay(from_);
                 }
 
-            }
-            else
-            {
-                _target = null;
             }
         }
     }

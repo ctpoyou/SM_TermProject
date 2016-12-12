@@ -141,7 +141,12 @@ Prefab:
     - target: {fileID: 114530792786168668, guid: ac8b82c2280d09d49aecdc00bf54e1fe,
         type: 2}
       propertyPath: _attackDmg
-      value: 20
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114530792786168668, guid: ac8b82c2280d09d49aecdc00bf54e1fe,
+        type: 2}
+      propertyPath: _maxHitPoint
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ac8b82c2280d09d49aecdc00bf54e1fe, type: 2}

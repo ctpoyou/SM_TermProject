@@ -19,6 +19,7 @@ namespace SoftwareModeling.GameCharacter.AI
             }
             else
             {
+                
                 parent.target = target;
                 return true;
             }
