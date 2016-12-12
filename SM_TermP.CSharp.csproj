@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AbstractGameObject.cs" />
+    <Compile Include="Assets\Scripts\Cams\PlayerCamera.cs" />
+    <Compile Include="Assets\Scripts\Cams\TitleCamera.cs" />
     <Compile Include="Assets\Scripts\Constants\ResourcePathConst.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\AbstractAINode.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\BehaviorTree.cs" />
@@ -93,13 +95,17 @@
     <Compile Include="Assets\Scripts\GameCharacter\AI\Sequencer.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\UseSkillTo.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AI\isHealthLow.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\AIArcher.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AICharacter.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AIKnight.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\AIPriest.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\AbstractCharacter.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\IPlacable.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\ISkillUsable.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\ITargetable.cs" />
-    <Compile Include="Assets\Scripts\GameCharacter\Skill\DefendDelegate.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\Skill\DefendOtherDelegate.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\Skill\DefendSelfDelegate.cs" />
+    <Compile Include="Assets\Scripts\GameCharacter\Skill\HealDelegate.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\MeleeAttackDelegate.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\RangeAttackDelegate.cs" />
     <Compile Include="Assets\Scripts\GameCharacter\Skill\SkillDelegate.cs" />
@@ -111,9 +117,12 @@
     <Compile Include="Assets\Scripts\Managers\SMInputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SMResourceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SMTimeManager.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
     <Compile Include="Assets\Scripts\UI\AbstractUI.cs" />
     <Compile Include="Assets\Scripts\UI\PauseResumeButton.cs" />
+    <Compile Include="Assets\Scripts\UI\Title\BackBtn.cs" />
+    <Compile Include="Assets\Scripts\UI\Title\CreditBtn.cs" />
+    <Compile Include="Assets\Scripts\UI\Title\PlayBtn.cs" />
+    <Compile Include="Assets\Scripts\UI\Title\TitleSceneBtn.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
