@@ -168,23 +168,29 @@ namespace SoftwareModeling.GameCharacter.AI
 
         public virtual void setNode(string nodeName)
         {
-            int distance = 0;
-            if(nodeName.Contains("#"))
+            string name;
+            int distance = 3;
+
+            if (nodeName.Contains('#'))
             {
                 try
                 {
-                    distance = Int32.Parse(nodeName.Split("#")[1]);
+                    distance = Int32.Parse(nodeName.Split('#')[1]);
                 }
                 catch (FormatException e)
                 {
-
                 }
-                nodeName = nodeName.Split("#")[0];
+                name = nodeName.Split('#')[0];
+            }
+            else
+            {
+                name = nodeName;
             }
            
-            switch ( nodeName )
+            switch ( name )
             {
                 case "move":
+                    Debug.Log(nodeName + " : dist = " + distance);
                     nodeType = new MoveTo(distance);
                     break;
                 case "find enemy":

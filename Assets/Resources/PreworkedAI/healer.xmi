@@ -7439,7 +7439,7 @@
 					<qualityScore value="-1"/>
 				</xmi:Extension>
 			</node>
-			<node name="sequencer" ordering="FIFO" xmi:id="XrH_y.qGAqAAAgkI" xmi:type="uml:CentralBufferNode">
+			<node name="sequncer" ordering="FIFO" xmi:id="XrH_y.qGAqAAAgkI" xmi:type="uml:CentralBufferNode">
 				<xmi:Extension extender="Visual Paradigm">
 					<model value="ObjectNode"/>
 					<mustIsolate xmi:value="false"/>

@@ -18,7 +18,17 @@ namespace SoftwareModeling.GameCharacter
             addSkill(new DefendSelfDelegate(this, 0.7, 10, 10, 1));
             addSkill(new DefendOtherDelegate(this, 0.7, 10, 3, 1));
 
-            WWW xmlFile = new WWW("file:///" + Application.dataPath + "/../Assets/Resources/PreworkedAI/tanker.xmi");
+            string path;
+
+            if( Debug.isDebugBuild )
+            {
+                path = "file:///" + Application.dataPath + "/../Assets/Resources/PreworkedAI/tanker.xmi";
+            }
+            else
+            {
+                path = "file:///" + Application.dataPath + "/tanker.xmi";
+            }
+            WWW xmlFile = new WWW(path);
             while (!xmlFile.isDone)
             {
                 //Debug.Log(www.progress);

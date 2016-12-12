@@ -18,7 +18,16 @@ namespace SoftwareModeling.GameCharacter
             addSkill(new DefendSelfDelegate(this, 0.9, 10, 10, 1));
             addSkill(new HealDelegate(_attackDmg * 2, 10, 8, 1));
 
-            WWW xmlFile = new WWW("file:///" + Application.dataPath + "/../Assets/Resources/PreworkedAI/healer.xmi");
+            string path;
+            if (Debug.isDebugBuild)
+            {
+                path = "file:///" + Application.dataPath + "/../Assets/Resources/PreworkedAI/healer.xmi";
+            }
+            else
+            {
+                path = "file:///" + Application.dataPath + "/healer.xmi";
+            }
+            WWW xmlFile = new WWW(path);
             while (!xmlFile.isDone)
             {
                 //Debug.Log(www.progress);
